@@ -1,0 +1,10 @@
+version: "2"
+services:
+  front:
+    build: ./front
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ../front:/usr/src/app
+    ports:
+      - "3000:3000"
