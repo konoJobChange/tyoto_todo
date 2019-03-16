@@ -1,0 +1,33 @@
+{
+  "name": "front",
+  "version": "1.0.0",
+  "main": "src/index.tsx",
+  "repository": "https://github.com/konowohagemasuheya/tyoto_todo]",
+  "license": "MIT",
+  "dependencies": {
+    "@types/react": "^16.8.8",
+    "@types/react-dom": "^16.8.2",
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4",
+    "webpack": "^4.29.6"
+  },
+  "devDependencies": {
+    "autoprefixer": "^9.5.0",
+    "awesome-typescript-loader": "^5.2.1",
+    "css-loader": "^2.1.1",
+    "csswring": "^7.0.0",
+    "mini-css-extract-plugin": "^0.5.0",
+    "node-sass": "^4.11.0",
+    "path": "^0.12.7",
+    "postcss-loader": "^3.0.0",
+    "sass-loader": "^7.1.0",
+    "source-map-loader": "^0.2.4",
+    "terser-webpack-plugin": "^1.2.3",
+    "typescript": "^3.3.3333",
+    "webpack-cli": "^3.3.0"
+  },
+  "scripts": {
+    "start": "webpack --watch",
+    "build": "webpack"
+  }
+}
