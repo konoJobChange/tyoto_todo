@@ -20,6 +20,8 @@ services:
   server:
     container_name: toyoto_todo_server
     build: ./server
+    ports:
+      - "8080:8080"
     volumes:
       # アプリケーションsrc
       - ../server:/go/src/tyoto_todo
