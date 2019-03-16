@@ -23,5 +23,7 @@ func main() {
 
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal("ListenAndServe:", err)
+	} else {
+		log.Println("Webサーバーを起動しました。:8080")
 	}
 }
