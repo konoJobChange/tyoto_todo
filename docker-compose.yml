@@ -7,7 +7,9 @@ services:
     # コンテナの名前
     container_name: toyoto_todo_front
     # Dockerfileのあるディレクトリパスを指定する
-    build: ./front
+    build:
+      context: ./docker/front
+      dockerfile: ./docker/front/Dockerfile
     environment:
       - NODE_ENV=development
     # dockerのポートとホストのポートをマップする
@@ -15,15 +17,12 @@ services:
       - "3000:3000"
     # ホストディレクトリ:コンテナ上のディレクトリ
     volumes:
-      - ../front:/usr/src/app
+      - ./front:/usr/src/app
   # ここからはサーバーサイドのコンテナに関する情報
   server:
     container_name: toyoto_todo_server
-    build: ./server
+    build:
+      context: .
+      dockerfile: ./docker/server/Dockerfile
     ports:
       - "8080:8080"
-    volumes:
-      # アプリケーションsrc
-      - ../server:/go/src/tyoto_todo
-      # アプリケーションをbuildしたやつ
-      - ../server/bin:/go/bin/
