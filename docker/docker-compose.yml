@@ -1,10 +1,27 @@
-version: "2"
+# docker-composeのバージョン
+version: "3"
+# services配下に各コンテナの情報を記載する
 services:
+  # ここからはfrontのコンテナに関する情報
   front:
+    # コンテナの名前
+    container_name: toyoto_todo_front
+    # Dockerfileのあるディレクトリパスを指定する
     build: ./front
     environment:
       - NODE_ENV=development
-    volumes:
-      - ../front:/usr/src/app
+    # dockerのポートとホストのポートをマップする
     ports:
       - "3000:3000"
+    # ホストディレクトリ:コンテナ上のディレクトリ
+    volumes:
+      - ../front:/usr/src/app
+  # ここからはサーバーサイドのコンテナに関する情報
+  server:
+    container_name: toyoto_todo_server
+    build: ./server
+    volumes:
+      # アプリケーションsrc
+      - ../server:/go/src/tyoto_todo
+      # アプリケーションをbuildしたやつ
+      - ../server/bin:/go/bin/
