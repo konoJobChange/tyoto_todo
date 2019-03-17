@@ -8,6 +8,8 @@ front-start:
 server-setup:
 	docker-compose build server
 server-start:
-	docker-compose up server
+	docker-compose up -d server
 server-stop:
 	docker-compose stop server
+service-log:
+	docker-compose logs -t
