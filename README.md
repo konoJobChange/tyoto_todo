@@ -10,6 +10,18 @@
 make setup
 ```
 
+フロントセットアップ
+
+```console
+make front-setup
+```
+
+サーバーセットアップ
+
+```console
+make server-setup
+```
+
 ## 実行
 
 front
@@ -18,3 +30,8 @@ front
 make front-start
 ```
 
+server
+
+```console
+make server-start
+```
