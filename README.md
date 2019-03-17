@@ -16,12 +16,6 @@ make setup
 make front-setup
 ```
 
-サーバーセットアップ
-
-```console
-make server-setup
-```
-
 ## 実行
 
 front
@@ -30,8 +24,8 @@ front
 make front-start
 ```
 
-server
+server-dev(ホットリロード付き)
 
 ```console
-make server-start
+make server-dev
 ```
