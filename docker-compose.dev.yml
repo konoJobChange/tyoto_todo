@@ -1,0 +1,11 @@
+version: "3.4"
+services:
+  server:
+    container_name: toyoto_todo_server_dev
+    build:
+      context: .
+      dockerfile: ./docker/server/Dockerfile
+      target: developer
+    volumes:
+      - ./server:/go/src/tyoto_todo
+    command: fresh -c ./build/fresh.conf

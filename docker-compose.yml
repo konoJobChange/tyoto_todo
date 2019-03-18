@@ -1,5 +1,5 @@
 # docker-composeのバージョン
-version: "3"
+version: "3.4"
 # services配下に各コンテナの情報を記載する
 services:
   # ここからはfrontのコンテナに関する情報
@@ -8,7 +8,7 @@ services:
     container_name: toyoto_todo_front
     # Dockerfileのあるディレクトリパスを指定する
     build:
-      context: ./docker/front
+      context: .
       dockerfile: ./docker/front/Dockerfile
     environment:
       - NODE_ENV=development
