@@ -19,3 +19,7 @@ server-dev:
 	&& $(MAKE) server-run
 service-log:
 	docker-compose logs -t
+db-start:
+	docker-compose up -d db
+db-connect_local:
+	mysql --host 127.0.0.1 --port 3306 -u user -ppassword
