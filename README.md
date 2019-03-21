@@ -29,3 +29,15 @@ server-dev(ホットリロード付き)
 ```console
 make server-dev
 ```
+
+database
+
+```console
+make db-start
+```
+
+databaseへのコネクション(mysqlコマンドのインストール必要)
+
+```console
+make db-connect_local
+```
