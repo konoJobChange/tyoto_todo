@@ -26,3 +26,21 @@ services:
       dockerfile: ./docker/server/Dockerfile
     ports:
       - "8080:8080"
+  # ここからはデータベースコンテナに関する情報
+  db:
+    container_name: toyoto_todo_db
+    build:
+      context: .
+      dockerfile: ./docker/mysql/Dockerfile
+    restart: always
+    environment:
+      MYSQL_DATABASE: tyoto_todo
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - "3306:3306"
+    volumes:
+     - ./docker/mysql/initdb.d:/docker-entrypoint-initdb.d
+     - ./docker/mysql/conf.d:/etc/mysql/conf.d
+     - ./log/mysql:/var/log/mysql
