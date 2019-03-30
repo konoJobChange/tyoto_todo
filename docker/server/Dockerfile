@@ -5,7 +5,6 @@ COPY ./server /go/src/tyoto_todo
 WORKDIR /go/src/tyoto_todo
 # RUNコマンドは、build時にコンテナ内で実行される。
 RUN go get github.com/pilu/fresh
-EXPOSE 8080
 
 # バイナリ化担当
 FROM golang as builder
