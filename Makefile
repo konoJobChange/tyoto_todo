@@ -19,7 +19,16 @@ server-dev:
 	&& $(MAKE) server-run
 service-log:
 	docker-compose logs -t
+service-stop:
+	docker-compose stop
 db-start:
 	docker-compose up -d db
 db-connect_local:
 	mysql --host 127.0.0.1 --port 3306 -u user -ppassword
+phpmyadmin-start:
+	docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d phpmyadmin
+db_and_phpmyadmin-start:
+	$(MAKE) db-start \
+	&& $(MAKE) phpmyadmin-start
+open_phpmyadmin:
+	open http://localhost:8081

@@ -9,3 +9,17 @@ services:
     volumes:
       - ./server:/go/src/tyoto_todo
     command: fresh -c ./build/fresh.conf
+  phpmyadmin:
+    container_name: toyoto_todo_phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_USER=root
+      - PMA_PASSWORD=rootpassword
+    links:
+      - db:db
+    ports:
+      - 8081:80
+    volumes:
+      - /sessions
+    depends_on:
+      - db
