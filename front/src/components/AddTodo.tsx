@@ -23,7 +23,16 @@ class Component extends React.Component<Props, State> {
     })
   }
 
-  handleSubmit () {
-    
+  render() {
+    const {onSubmit} = this.props;
+    const {value} = this.state;
+    return (
+      <div>
+        <input type="text" onChange={e => this.handleChange(e)} value={value}/>
+        <input type="button" value="追加" onClick={() => onSubmit(value)} />
+      </div>
+    )
   }
 }
+
+export default Component;

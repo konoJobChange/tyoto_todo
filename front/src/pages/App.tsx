@@ -1,8 +1,11 @@
 import * as React from "react";
+import Home from "./Home";
 
 const component: React.SFC = () => {
   return (
-    <div></div>
+    <div>
+      <Home />
+    </div>
   )
 }
 
