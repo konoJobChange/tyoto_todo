@@ -1,0 +1,46 @@
+# docker-composeのバージョン
+version: "3.4"
+# services配下に各コンテナの情報を記載する
+services:
+  # ここからはfrontのコンテナに関する情報
+  front:
+    # コンテナの名前
+    container_name: toyoto_todo_front
+    # Dockerfileのあるディレクトリパスを指定する
+    build:
+      context: .
+      dockerfile: ./docker/front/Dockerfile
+    environment:
+      - NODE_ENV=development
+    # dockerのポートとホストのポートをマップする
+    ports:
+      - "3000:3000"
+    # ホストディレクトリ:コンテナ上のディレクトリ
+    volumes:
+      - ./front:/usr/src/app
+  # ここからはサーバーサイドのコンテナに関する情報
+  server:
+    container_name: toyoto_todo_server
+    build:
+      context: .
+      dockerfile: ./docker/server/Dockerfile
+    ports:
+      - "8080:8080"
+  # ここからはデータベースコンテナに関する情報
+  db:
+    container_name: toyoto_todo_db
+    build:
+      context: .
+      dockerfile: ./docker/mysql/Dockerfile
+    restart: always
+    environment:
+      MYSQL_DATABASE: tyoto_todo
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - "3306:3306"
+    volumes:
+     - ./docker/mysql/initdb.d:/docker-entrypoint-initdb.d
+     - ./docker/mysql/conf.d:/etc/mysql/conf.d
+     - ./log/mysql:/var/log/mysql
