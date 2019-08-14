@@ -2,7 +2,7 @@ setup:
 	$(MAKE) front-setup
 	$(MAKE) server-setup
 front-setup:
-	docker-compose run --rm front sh -c "npm i -g create-react-app && create-react-app ."
+	cd docker && docker-compose run --rm front sh -c "yarn install"
 front-start:
 	docker-compose run --rm --service-ports front npm start
 server-build:
@@ -32,3 +32,4 @@ db_and_phpmyadmin-start:
 	&& $(MAKE) phpmyadmin-start
 open_phpmyadmin:
 	open http://localhost:8081
+  
