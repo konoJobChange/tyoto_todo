@@ -2,9 +2,9 @@ setup:
 	$(MAKE) front-setup
 	$(MAKE) server-setup
 front-setup:
-	cd docker && docker-compose run --rm front sh -c "yarn install"
+	docker-compose build front
 front-start:
-	docker-compose run --rm --service-ports front npm start
+	docker-compose up -d front
 server-build:
 	docker-compose build server
 server-start:
