@@ -13,11 +13,11 @@ const useStyles = makeStyles((theme: Theme) =>
       marginRight: theme.spacing(2),
     },
     title: {
+      color: '#333',
       flexGrow: 1,
     },
-    orange: {
-      color: theme.palette.getContrastText(deepOrange[500]),
-      backgroundColor: deepOrange[500],
+    bar: {
+      backgroundColor: '#81c784',
     },
     purple: {
       color: theme.palette.getContrastText(deepPurple[500]),
@@ -44,10 +44,9 @@ const ButtonAppBar = () => {
     }
     setFirstByteInUserName(user.displayName.charAt(0));
   }, [user, user?.displayName]);
-
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="static" className={classes.bar}>
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
             Todo List
@@ -59,8 +58,6 @@ const ButtonAppBar = () => {
             </Button>
           ) : (
             <>
-              <Avatar>{firstByteInUserName}</Avatar>
-              <Avatar className={classes.orange}>{firstByteInUserName}</Avatar>
               <Avatar className={classes.purple}>{firstByteInUserName}</Avatar>
             </>
           )}
