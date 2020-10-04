@@ -1,19 +1,26 @@
 import { useRouter } from 'next/router';
 import firebase from 'firebase';
 import 'firebase/auth';
-import { ComponentType, createContext, useCallback, useContext, useEffect, useState } from 'react';
+import {
+  ComponentType,
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+import { LinearProgress } from '@material-ui/core';
 
 type AsyncVoid = () => Promise<void>;
 const AuthContext = createContext<{
   login: AsyncVoid;
   logout: AsyncVoid;
   user: firebase.User | null;
-  loading: boolean;
 }>({
   login: () => Promise.reject('not implements'),
   logout: () => Promise.reject('not implements'),
   user: null,
-  loading: true,
 });
 
 export function AuthProvider({ children }: { children: any }) {
@@ -29,14 +36,14 @@ export function AuthProvider({ children }: { children: any }) {
 
   useEffect(() => {
     let isMount = true;
-    async function loadAuthStae() {
+    async function loadAuthSate() {
       const currentUser = firebase.auth().currentUser;
       if (isMount) {
         if (currentUser) setUser(currentUser);
         setLoading(false);
       }
     }
-    loadAuthStae();
+    loadAuthSate();
     return () => {
       isMount = false;
     };
@@ -50,9 +57,11 @@ export function AuthProvider({ children }: { children: any }) {
     await firebase.auth().signOut();
   }, []);
 
-  return (
-    <AuthContext.Provider value={{ login, logout, user, loading }}>{children}</AuthContext.Provider>
-  );
+  if (loading) {
+    return <LinearProgress />;
+  }
+
+  return <AuthContext.Provider value={{ login, logout, user }}>{children}</AuthContext.Provider>;
 }
 
 export const useAuth = () => useContext(AuthContext);
