@@ -3,6 +3,7 @@ import Head from 'next/head';
 import firebase from 'firebase';
 import 'firebase/analytics';
 
+import CssBaseline from '@material-ui/core/CssBaseline';
 import ButtonAppBar from '../components/ButtonAppBar';
 
 import '../styles/globals.css';
@@ -34,6 +35,8 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
           href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
         />
       </Head>
+      {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+      <CssBaseline />
       <Component {...pageProps} />
     </>
   );
