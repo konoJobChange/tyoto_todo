@@ -29,14 +29,14 @@ export function AuthProvider({ children }: { children: any }) {
 
   useEffect(() => {
     let isMount = true;
-    async function loadAuthStae() {
+    async function loadAuthSate() {
       const currentUser = firebase.auth().currentUser;
       if (isMount) {
         if (currentUser) setUser(currentUser);
         setLoading(false);
       }
     }
-    loadAuthStae();
+    loadAuthSate();
     return () => {
       isMount = false;
     };
