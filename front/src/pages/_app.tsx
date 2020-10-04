@@ -4,9 +4,9 @@ import firebase from 'firebase';
 import 'firebase/analytics';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
-import ButtonAppBar from '../components/ButtonAppBar';
 
 import '../styles/globals.css';
+import { AuthProvider } from 'src/modules/hooks/useAuth';
 
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
@@ -28,16 +28,17 @@ if (typeof window !== 'undefined' && !firebase.apps.length) {
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <>
-      <ButtonAppBar />
-      <Head>
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-        />
-      </Head>
-      {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-      <CssBaseline />
-      <Component {...pageProps} />
+      <AuthProvider>
+        <Head>
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+          />
+        </Head>
+        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+        <CssBaseline />
+        <Component {...pageProps} />
+      </AuthProvider>
     </>
   );
 };

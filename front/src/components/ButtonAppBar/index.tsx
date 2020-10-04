@@ -2,6 +2,7 @@ import React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Avatar, AppBar, Button, Toolbar, Typography, CircularProgress } from '@material-ui/core';
 import { deepOrange, deepPurple } from '@material-ui/core/colors';
+import { useAuth } from 'src/modules/hooks/useAuth';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -32,7 +33,7 @@ interface ButtonAppBar {
 
 const ButtonAppBar = ({ isLogin, avatarImage }: ButtonAppBar) => {
   const classes = useStyles();
-
+  const { login } = useAuth();
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -42,7 +43,9 @@ const ButtonAppBar = ({ isLogin, avatarImage }: ButtonAppBar) => {
           </Typography>
 
           {!isLogin ? (
-            <Button color="inherit">Login</Button>
+            <Button color="inherit" onClick={login}>
+              Login
+            </Button>
           ) : (
             <>
               {avatarImage === 'orange' && <Avatar className={classes.orange}>A</Avatar>}
