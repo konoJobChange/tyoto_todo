@@ -60,8 +60,8 @@ const ButtonAppBar = () => {
           ) : (
             <>
               <Avatar>{firstByteInUserName}</Avatar>
-              <Avatar className={classes.orange}>A</Avatar>
-              <Avatar className={classes.purple}>A</Avatar>
+              <Avatar className={classes.orange}>{firstByteInUserName}</Avatar>
+              <Avatar className={classes.purple}>{firstByteInUserName}</Avatar>
             </>
           )}
         </Toolbar>
