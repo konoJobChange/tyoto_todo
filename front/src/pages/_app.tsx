@@ -3,6 +3,8 @@ import Head from 'next/head';
 import firebase from 'firebase';
 import 'firebase/analytics';
 
+import ButtonAppBar from '../components/ButtonAppBar';
+
 import '../styles/globals.css';
 
 const firebaseConfig = {
@@ -15,6 +17,7 @@ const firebaseConfig = {
   appId: process.env.FIREBASE_APP_ID,
   measurementId: process.env.FIREBASE_MEASUREMENT_ID,
 };
+
 // Initialize Firebase
 if (typeof window !== 'undefined' && !firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -24,6 +27,7 @@ if (typeof window !== 'undefined' && !firebase.apps.length) {
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <>
+      <ButtonAppBar />
       <Head>
         <link
           rel="stylesheet"
