@@ -1,15 +1,13 @@
 import Head from 'next/head';
-import { Button, Container, List, ListItem, ListItemText } from '@material-ui/core';
+import { Container, List, ListItem, ListItemText } from '@material-ui/core';
 
 import styles from '../styles/Home.module.css';
 
-import ButtonAppBar from '../components/ButtonAppBar';
 import TodoList, { ToDo as ITodo } from '../api/todos';
 
 const IndexPage = () => {
   return (
     <Container>
-      <ButtonAppBar />
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />

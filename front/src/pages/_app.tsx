@@ -4,9 +4,10 @@ import firebase from 'firebase';
 import 'firebase/analytics';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
+import ButtonAppBar from 'src/components/ButtonAppBar';
+import { AuthProvider } from 'src/modules/hooks/useAuth';
 
 import '../styles/globals.css';
-import { AuthProvider } from 'src/modules/hooks/useAuth';
 
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
@@ -29,6 +30,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <>
       <AuthProvider>
+        <ButtonAppBar />
         <Head>
           <link
             rel="stylesheet"
