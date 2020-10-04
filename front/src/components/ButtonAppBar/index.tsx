@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import { Avatar, AppBar, Button, Toolbar, Typography, CircularProgress } from '@material-ui/core';
+import { Avatar, AppBar, Button, Toolbar, Typography } from '@material-ui/core';
 import { deepOrange, deepPurple } from '@material-ui/core/colors';
 import { useAuth } from 'src/modules/hooks/useAuth';
 
@@ -26,14 +26,25 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-interface ButtonAppBar {
-  isLogin: boolean;
-  avatarImage: string;
-}
-
-const ButtonAppBar = ({ isLogin, avatarImage }: ButtonAppBar) => {
+const ButtonAppBar = () => {
   const classes = useStyles();
-  const { login } = useAuth();
+  const { login: handleLogin, user } = useAuth();
+
+  const [isLogin, setIsLogin] = useState(false);
+  const [firstByteInUserName, setFirstByteInUserName] = useState('');
+
+  useEffect(() => {
+    if (!user) {
+      return;
+    }
+    setIsLogin(true);
+
+    if (!user.displayName) {
+      return;
+    }
+    setFirstByteInUserName(user.displayName.charAt(0));
+  }, [user, user?.displayName]);
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -43,14 +54,14 @@ const ButtonAppBar = ({ isLogin, avatarImage }: ButtonAppBar) => {
           </Typography>
 
           {!isLogin ? (
-            <Button color="inherit" onClick={login}>
+            <Button color="inherit" onClick={handleLogin}>
               Login
             </Button>
           ) : (
             <>
-              {avatarImage === 'orange' && <Avatar className={classes.orange}>A</Avatar>}
-              {avatarImage === 'purple' && <Avatar className={classes.orange}>B</Avatar>}
-              {avatarImage === '' && <Avatar>D</Avatar>}
+              <Avatar>{firstByteInUserName}</Avatar>
+              <Avatar className={classes.orange}>A</Avatar>
+              <Avatar className={classes.purple}>A</Avatar>
             </>
           )}
         </Toolbar>
