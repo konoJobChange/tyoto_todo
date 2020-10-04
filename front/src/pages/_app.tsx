@@ -4,6 +4,7 @@ import firebase from 'firebase';
 import 'firebase/analytics';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
+import ButtonAppBar from '../components/ButtonAppBar';
 
 import '../styles/globals.css';
 
@@ -27,6 +28,7 @@ if (typeof window !== 'undefined' && !firebase.apps.length) {
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <>
+      <ButtonAppBar />
       <Head>
         <link
           rel="stylesheet"
