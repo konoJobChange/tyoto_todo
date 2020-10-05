@@ -58,7 +58,11 @@ const ButtonAppBar = () => {
             </Button>
           ) : (
             <>
-              <Avatar className={classes.purple}>{firstByteInUserName}</Avatar>
+              <Avatar
+                className={classes.purple}
+                alt={firstByteInUserName}
+                src={user ? user.photoURL || undefined : undefined}
+              ></Avatar>
             </>
           )}
         </Toolbar>
