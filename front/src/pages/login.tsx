@@ -17,7 +17,7 @@ export default function Login() {
     if (process.browser) {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       const firebaseui = require('../modules/firebase-ui');
-      const ui = new firebaseui.auth.AuthUI(firebase.auth());
+      const ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth())
       ui.start('#firebase-auth-container', config);
     }
   }, []);
