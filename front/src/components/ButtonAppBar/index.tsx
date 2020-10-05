@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Avatar, AppBar, Button, Toolbar, Typography } from '@material-ui/core';
-import { deepOrange, deepPurple } from '@material-ui/core/colors';
+import { deepPurple } from '@material-ui/core/colors';
 import { useAuth } from 'src/modules/hooks/useAuth';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -59,8 +59,8 @@ const ButtonAppBar = () => {
             <Button onClick={handleLogout}>
               <Avatar
                 className={classes.purple}
-                alt={firstByteInUserName}
-                src={user ? user.photoURL || undefined : undefined}
+                alt={user?.displayName ?? undefined}
+                src={user?.photoURL ?? undefined}
               />
             </Button>
           )}
