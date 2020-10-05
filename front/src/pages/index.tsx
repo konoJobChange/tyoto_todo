@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { Container, List, ListItem, ListItemText } from '@material-ui/core';
-import SimpleList from 'src/components/SimpleList';
+import SimpleList from 'src/components/SimpleItem';
 
 import styles from '../styles/Home.module.css';
 
