@@ -4,6 +4,9 @@ const path = require('path');
 require('dotenv').config();
 
 module.exports = {
+  devIndicators: {
+    autoPrerender: false,
+  },
   webpack: (config) => {
     config.resolve.alias = {
       ...config.resolve.alias,

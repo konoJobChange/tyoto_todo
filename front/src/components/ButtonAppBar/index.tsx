@@ -19,6 +19,9 @@ const useStyles = makeStyles((theme: Theme) =>
     bar: {
       backgroundColor: '#81c784',
     },
+    login: {
+      color: '#333',
+    },
     purple: {
       color: theme.palette.getContrastText(deepPurple[500]),
       backgroundColor: deepPurple[500],
@@ -28,13 +31,14 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const ButtonAppBar = () => {
   const classes = useStyles();
-  const { login: handleLogin, user } = useAuth();
+  const { login: handleLogin, logout: handleLogout, user } = useAuth();
 
   const [isLogin, setIsLogin] = useState(false);
   const [firstByteInUserName, setFirstByteInUserName] = useState('');
 
   useEffect(() => {
     if (!user) {
+      setIsLogin(false);
       return;
     }
     setIsLogin(true);
@@ -44,6 +48,7 @@ const ButtonAppBar = () => {
     }
     setFirstByteInUserName(user.displayName.charAt(0));
   }, [user, user?.displayName]);
+
   return (
     <div className={classes.root}>
       <AppBar position="static" className={classes.bar}>
@@ -53,13 +58,13 @@ const ButtonAppBar = () => {
           </Typography>
 
           {!isLogin ? (
-            <Button color="inherit" onClick={handleLogin}>
+            <Button color="secondary" onClick={handleLogin} className={classes.login}>
               Login
             </Button>
           ) : (
-            <>
+            <Button onClick={handleLogout}>
               <Avatar className={classes.purple}>{firstByteInUserName}</Avatar>
-            </>
+            </Button>
           )}
         </Toolbar>
       </AppBar>

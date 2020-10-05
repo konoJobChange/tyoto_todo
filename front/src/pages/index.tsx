@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import { Container, List, ListItem, ListItemText } from '@material-ui/core';
+import SimpleList from 'src/components/SimpleList';
 
 import styles from '../styles/Home.module.css';
 
@@ -7,7 +8,7 @@ import TodoList, { ToDo as ITodo } from '../api/todos';
 
 const IndexPage = () => {
   return (
-    <Container>
+    <>
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
@@ -15,37 +16,10 @@ const IndexPage = () => {
 
       <List>
         {TodoList.map((v: ITodo) => {
-          return (
-            <ListItem key={v.id}>
-              <ListItemText>
-                {v.title}
-                {v.detail}
-              </ListItemText>
-            </ListItem>
-          );
+          return <SimpleList key={v.id} />;
         })}
       </List>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">TyotoTODO</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing <code className={styles.code}>pages/index.js</code>
-        </p>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </Container>
+    </>
   );
 };
 

@@ -5,6 +5,7 @@ import 'firebase/analytics';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
 import ButtonAppBar from 'src/components/ButtonAppBar';
+import FloatingActionButton from 'src/components/FloatingActionButton';
 import { AuthProvider } from 'src/modules/hooks/useAuth';
 
 import '../styles/globals.css';
@@ -40,6 +41,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
         <Component {...pageProps} />
+        <FloatingActionButton />
       </AuthProvider>
     </>
   );
