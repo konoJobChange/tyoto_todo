@@ -1,10 +1,6 @@
 import Head from 'next/head';
-import { Container, List, ListItem, ListItemText } from '@material-ui/core';
+import { List } from '@material-ui/core';
 import SimpleList from 'src/components/SimpleItem';
-
-import styles from '../styles/Home.module.css';
-
-import TodoList, { ToDo as ITodo } from '../api/todos';
 
 const IndexPage = () => {
   return (
@@ -15,9 +11,7 @@ const IndexPage = () => {
       </Head>
 
       <List>
-        {TodoList.map((v: ITodo) => {
-          return <SimpleList key={v.id} />;
-        })}
+        <SimpleList />
       </List>
     </>
   );

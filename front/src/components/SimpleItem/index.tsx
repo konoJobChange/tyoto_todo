@@ -1,9 +1,14 @@
-import { useCallback } from 'react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import { Divider, IconButton, ListItemText } from '@material-ui/core';
 import { Create as CreateIcon, Delete as DeleteIcon } from '@material-ui/icons';
+
+import { useAuth } from 'src/modules/hooks/useAuth';
+import { ToDo } from 'src/api/todos';
+
+import firebase from 'firebase';
+import 'firebase/firestore';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -15,7 +20,25 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const SimpleList = () => {
+  const [list, setList] = useState<ToDo[]>([]);
   const classes = useStyles();
+  const { user } = useAuth();
+
+  useEffect(() => {
+    // TODO: あとでけす
+    if (!user) {
+      return;
+    }
+
+    const unsubscribe = firebase
+      .firestore()
+      .collection(`users/${user?.uid}/todos`)
+      .onSnapshot((snap) => {
+        const newList = snap.docs.map((doc) => doc.data() as ToDo);
+        setList([...list, ...newList]);
+      });
+    return unsubscribe;
+  }, [user]);
 
   const handleDelete = useCallback(() => {
     console.log('delete');
@@ -27,16 +50,22 @@ const SimpleList = () => {
 
   return (
     <div className={classes.root}>
-      <ListItem>
-        <ListItemText primary="Trash" />
-        <IconButton onClick={handleDelete}>
-          <DeleteIcon />
-        </IconButton>
-        <IconButton onClick={handleEdit}>
-          <CreateIcon />
-        </IconButton>
-      </ListItem>
-      <Divider />
+      {list.map((item, i) => {
+        return (
+          <Fragment key={i}>
+            <ListItem>
+              <ListItemText primary={item.title} />
+              <IconButton onClick={handleDelete}>
+                <DeleteIcon />
+              </IconButton>
+              <IconButton onClick={handleEdit}>
+                <CreateIcon />
+              </IconButton>
+            </ListItem>
+            <Divider />
+          </Fragment>
+        );
+      })}
     </div>
   );
 };
