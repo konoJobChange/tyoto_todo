@@ -24,7 +24,10 @@ const useStyles = makeStyles({
 
 const config = {
   signInOptions: [
-    { provider: firebase.auth.EmailAuthProvider.PROVIDER_ID, requireDisplayName: true },
+    {
+      provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+      requireDisplayName: true,
+    },
     firebase.auth.GoogleAuthProvider.PROVIDER_ID,
     firebase.auth.PhoneAuthProvider.PROVIDER_ID,
   ],
@@ -39,7 +42,8 @@ export default function Login() {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       const firebaseui = require('../modules/firebase-ui');
       const ui =
-        firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth());
+        firebaseui.auth.AuthUI.getInstance() ||
+        new firebaseui.auth.AuthUI(firebase.auth());
       ui.start('#firebase-auth-container', config);
     }
   }, []);

@@ -42,7 +42,12 @@ export default function Profile() {
           <CardHeader
             className={styles.cardHeader}
             title={`${user.displayName}さんのプロフィール`}
-            avatar={<Avatar alia-label="profile" src={user.photoURL || undefined}></Avatar>}
+            avatar={
+              <Avatar
+                alia-label="profile"
+                src={user.photoURL || undefined}
+              ></Avatar>
+            }
           />
         ) : null}
         {user ? (

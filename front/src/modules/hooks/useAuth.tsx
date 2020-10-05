@@ -62,7 +62,11 @@ export function AuthProvider({ children }: { children: any }) {
     return <LinearProgress />;
   }
 
-  return <AuthContext.Provider value={{ login, logout, user }}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{ login, logout, user }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
 export const useAuth = () => useContext(AuthContext);
