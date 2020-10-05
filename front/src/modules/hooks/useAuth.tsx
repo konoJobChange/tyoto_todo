@@ -55,6 +55,7 @@ export function AuthProvider({ children }: { children: any }) {
 
   const logout = useCallback(async () => {
     await firebase.auth().signOut();
+    router.replace('/login');
   }, []);
 
   if (loading) {
