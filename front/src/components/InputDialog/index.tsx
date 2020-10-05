@@ -10,22 +10,53 @@ import {
 } from '@material-ui/core';
 
 import { useInput } from 'src/modules/hooks/useInput';
+import { useAuth } from 'src/modules/hooks/useAuth';
+
+import firebase from 'firebase';
+import 'firebase/firestore';
 
 interface InputDialog {
   open: boolean;
   handleClose: () => void;
 }
 
+interface ToDo {
+  title: string;
+  detail: string;
+  update_at: firebase.firestore.Timestamp;
+  create_at: firebase.firestore.Timestamp;
+}
+
 export default function InputDialog({ open, handleClose }: InputDialog) {
+  const { user } = useAuth();
   const { value: title, bind: bindTitle } = useInput('');
   const { value: detail, bind: bindDetail } = useInput('');
 
   const handleCreate = useCallback(() => {
-    console.log('create!!!!!!!!!');
-    console.log(title);
-    console.log(detail);
+    // TODO: あとでけす
+    if (!user) {
+      return;
+    }
+
+    const db = firebase.firestore();
+    const doc: ToDo = {
+      title,
+      detail,
+      update_at: firebase.firestore.Timestamp.now(),
+      create_at: firebase.firestore.Timestamp.now(),
+    };
+
+    db.collection(`users/${user?.uid}/todos`)
+      .add(doc)
+      .then(function (docRef) {
+        console.log('Document written with ID: ', docRef.id);
+      })
+      .catch(function (error) {
+        console.error('Error adding document: ', error);
+      });
+
     handleClose();
-  }, [title, detail]);
+  }, [title, detail, user]);
 
   return (
     <div>
