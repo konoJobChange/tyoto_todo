@@ -1,11 +1,15 @@
 import { useCallback } from 'react';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  TextField,
+} from '@material-ui/core';
+
+import { useInput } from 'src/modules/hooks/useInput';
 
 interface InputDialog {
   open: boolean;
@@ -13,10 +17,15 @@ interface InputDialog {
 }
 
 export default function InputDialog({ open, handleClose }: InputDialog) {
+  const { value: title, bind: bindTitle } = useInput('');
+  const { value: detail, bind: bindDetail } = useInput('');
+
   const handleCreate = useCallback(() => {
-    console.log('create!!');
+    console.log('create!!!!!!!!!');
+    console.log(title);
+    console.log(detail);
     handleClose();
-  }, []);
+  }, [title, detail]);
 
   return (
     <div>
@@ -36,9 +45,18 @@ export default function InputDialog({ open, handleClose }: InputDialog) {
             type="text"
             fullWidth
             required
+            {...bindTitle}
           />
 
-          <TextField margin="dense" id="detail" label="Detail" multiline fullWidth rowsMax="3" />
+          <TextField
+            margin="dense"
+            id="detail"
+            label="Detail"
+            multiline
+            fullWidth
+            rowsMax="3"
+            {...bindDetail}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
