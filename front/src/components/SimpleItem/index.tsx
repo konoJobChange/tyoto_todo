@@ -27,17 +27,15 @@ const SimpleList = () => {
 
   return (
     <div className={classes.root}>
-      <List>
-        <ListItem>
-          <ListItemText primary="Trash" />
-          <IconButton onClick={handleDelete}>
-            <DeleteIcon />
-          </IconButton>
-          <IconButton onClick={handleEdit}>
-            <CreateIcon />
-          </IconButton>
-        </ListItem>
-      </List>
+      <ListItem>
+        <ListItemText primary="Trash" />
+        <IconButton onClick={handleDelete}>
+          <DeleteIcon />
+        </IconButton>
+        <IconButton onClick={handleEdit}>
+          <CreateIcon />
+        </IconButton>
+      </ListItem>
       <Divider />
     </div>
   );
