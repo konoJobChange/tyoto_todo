@@ -36,7 +36,6 @@ export default function Profile() {
           .doc(`users/${router.query.uid}/todos/${router.query.id}`)
           .get()
       ).data() as ToDo;
-      console.log({ todo });
       if (isMount) {
         setTodo(todo || null);
       }
