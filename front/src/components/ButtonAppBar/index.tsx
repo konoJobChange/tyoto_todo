@@ -12,6 +12,7 @@ import {
   ListItem,
   Divider,
   ListItemIcon,
+  Link
 } from '@material-ui/core';
 import { deepPurple, red } from '@material-ui/core/colors';
 import { useAuth } from 'src/modules/hooks/useAuth';
@@ -86,7 +87,7 @@ const ButtonAppBar = () => {
       <AppBar position="static" className={classes.bar}>
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
-            Todo List
+            <Link href="#" onClick={() => router.push('/')}>Todo List</Link>
           </Typography>
 
           {!isLogin ? (
