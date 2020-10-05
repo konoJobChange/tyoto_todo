@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint --ext .ts,.tsx ./src",
-    "lint:fix": "eslint --ext .ts,.tsx ./src --fix"
+    "lint:fix": "eslint --ext .ts,.tsx ./src --fix",
+    "preexport": "npm run build",
+    "export": "next export"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.0",
