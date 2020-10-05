@@ -53,7 +53,9 @@ const ButtonAppBar = () => {
   const router = useRouter();
 
   const [isLogin, setIsLogin] = useState(false);
-  const [popoverEl, setPopoverEl] = React.useState<HTMLButtonElement | null>(null);
+  const [popoverEl, setPopoverEl] = React.useState<HTMLButtonElement | null>(
+    null,
+  );
 
   useEffect(() => {
     if (!user) {
@@ -88,7 +90,11 @@ const ButtonAppBar = () => {
           </Typography>
 
           {!isLogin ? (
-            <Button color="secondary" onClick={handleLogin} className={classes.login}>
+            <Button
+              color="secondary"
+              onClick={handleLogin}
+              className={classes.login}
+            >
               Login
             </Button>
           ) : (
@@ -117,14 +123,14 @@ const ButtonAppBar = () => {
         }}
       >
         <List>
-          <ListItem key="profile" onClick={goToProfile}>
+          <ListItem key="profile" button onClick={goToProfile}>
             <ListItemIcon>
               <AccountBoxIcon />
             </ListItemIcon>
             <ListItemText>プロフィール</ListItemText>
           </ListItem>
           <Divider />
-          <ListItem key="logout" onClick={handleLogout}>
+          <ListItem key="logout" button onClick={handleLogout}>
             <ListItemIcon>
               <ExitToAppIcon />
             </ListItemIcon>
