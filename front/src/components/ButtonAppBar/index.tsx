@@ -34,7 +34,6 @@ const ButtonAppBar = () => {
   const { login: handleLogin, logout: handleLogout, user } = useAuth();
 
   const [isLogin, setIsLogin] = useState(false);
-  const [firstByteInUserName, setFirstByteInUserName] = useState('');
 
   useEffect(() => {
     if (!user) {
@@ -42,12 +41,7 @@ const ButtonAppBar = () => {
       return;
     }
     setIsLogin(true);
-
-    if (!user.displayName) {
-      return;
-    }
-    setFirstByteInUserName(user.displayName.charAt(0));
-  }, [user, user?.displayName]);
+  }, [user, setIsLogin]);
 
   return (
     <div className={classes.root}>
@@ -63,7 +57,11 @@ const ButtonAppBar = () => {
             </Button>
           ) : (
             <Button onClick={handleLogout}>
-              <Avatar className={classes.purple}>{firstByteInUserName}</Avatar>
+              <Avatar
+                className={classes.purple}
+                alt={firstByteInUserName}
+                src={user ? user.photoURL || undefined : undefined}
+              />
             </Button>
           )}
         </Toolbar>
