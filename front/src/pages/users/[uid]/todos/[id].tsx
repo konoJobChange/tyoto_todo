@@ -5,6 +5,7 @@ import {
   CardHeader,
   CircularProgress,
   Grid,
+  IconButton,
   makeStyles,
   Typography,
 } from '@material-ui/core';
@@ -13,9 +14,11 @@ import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ToDo } from 'src/api/todos';
 import dayjs from 'dayjs';
+import DeleteIcon from '@material-ui/icons/Delete';
+
 const useStyles = makeStyles({
   cardHeader: {
     backgroundColor: green[500],
@@ -25,19 +28,21 @@ const useStyles = makeStyles({
 export default function Profile() {
   const classes = useStyles();
   const router = useRouter();
-  const [todo, setTodo] = useState<ToDo | undefined | null>(undefined);
+
+  const [doc, setDoc] = useState<{doc: firebase.firestore.DocumentSnapshot, todo: ToDo} | null>(null);
 
   useEffect(() => {
     let isMount = true;
     async function fetch() {
-      const todo = (
-        await firebase
-          .firestore()
-          .doc(`users/${router.query.uid}/todos/${router.query.id}`)
-          .get()
-      ).data() as ToDo;
+      const doc = await firebase
+      .firestore()
+      .doc(`users/${router.query.uid}/todos/${router.query.id}`)
+      .get();
       if (isMount) {
-        setTodo(todo || null);
+        setDoc({
+          doc,
+          todo: doc.data() as ToDo
+        });
       }
     }
     fetch();
@@ -45,6 +50,15 @@ export default function Profile() {
       isMount = false;
     };
   }, []);
+
+  const handleDelete = useCallback(() => {
+    if (doc) {
+      return doc.doc.ref.delete();
+    }
+    return Promise.resolve();
+  }, [doc]);
+
+  console.log({doc});
   return (
     <Grid
       container
@@ -54,26 +68,30 @@ export default function Profile() {
       justify="center"
       style={{ minHeight: '100vh' }}
     >
-      {todo === undefined ? <CircularProgress /> : null}
+      {doc == null ? <CircularProgress /> : null}
       <Card>
-        {todo ? (
-          <CardHeader className={classes.cardHeader} title={todo.title} />
+        {doc && doc.todo ? (
+          <CardHeader className={classes.cardHeader} title={doc && doc.todo.title} action={
+            <IconButton aria-label="trash" onClick={handleDelete}>
+              <DeleteIcon />
+            </IconButton>
+          }/>
         ) : null}
-        {todo ? (
+        {doc && doc.todo ? (
           <CardContent>
             <Grid container spacing={2} direction="column">
               <Grid item xs>
                 <Typography gutterBottom variant="subtitle2">
                   詳細
                 </Typography>
-                <Typography>{todo.detail}</Typography>
+                <Typography>{doc && doc.todo.detail}</Typography>
               </Grid>
               <Grid item xs>
                 <Typography gutterBottom variant="subtitle2">
                   作成日時
                 </Typography>
                 <Typography>
-                  {dayjs(todo.create_at.toDate()).format(
+                  {dayjs(doc && doc.todo.create_at.toDate()).format(
                     'YYYY年MM月DD日HH時mm分ss秒',
                   )}
                 </Typography>
@@ -83,7 +101,7 @@ export default function Profile() {
                   更新日時
                 </Typography>
                 <Typography>
-                  {dayjs(todo.update_at.toDate()).format(
+                  {dayjs(doc && doc.todo.update_at.toDate()).format(
                     'YYYY年MM月DD日HH時mm分ss秒',
                   )}
                 </Typography>
