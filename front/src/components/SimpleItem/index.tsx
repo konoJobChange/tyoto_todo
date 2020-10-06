@@ -9,6 +9,7 @@ import { ToDo } from 'src/api/todos';
 
 import firebase from 'firebase';
 import 'firebase/firestore';
+import { useRouter } from 'next/router';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -23,6 +24,7 @@ const SimpleList = () => {
   const [list, setList] = useState<ToDo[]>([]);
   const classes = useStyles();
   const { user } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
     // TODO: あとでけす
@@ -34,7 +36,10 @@ const SimpleList = () => {
       .firestore()
       .collection(`users/${user?.uid}/todos`)
       .onSnapshot((snap) => {
-        const newList = snap.docs.map((doc) => doc.data() as ToDo);
+        const newList = snap.docs.map((doc) => ({
+          ...(doc.data() as ToDo),
+          id: doc.id,
+        }));
         setList([...list, ...newList]);
       });
     return unsubscribe;
@@ -53,7 +58,7 @@ const SimpleList = () => {
       {list.map((item, i) => {
         return (
           <Fragment key={i}>
-            <ListItem>
+            <ListItem button onClick={() => {router.push(`/users/${user.uid}/todos/${item.id}`)}}>
               <ListItemText primary={item.title} />
               <IconButton onClick={handleDelete}>
                 <DeleteIcon />

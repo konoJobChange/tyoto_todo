@@ -11,22 +11,26 @@ import {
   useState,
 } from 'react';
 import { LinearProgress } from '@material-ui/core';
+import Login from 'src/components/Login';
 
 type AsyncVoid = () => Promise<void>;
 const AuthContext = createContext<{
   login: AsyncVoid;
   logout: AsyncVoid;
-  user: firebase.User | null;
+  user: firebase.User;
 }>({
   login: () => Promise.reject('not implements'),
   logout: () => Promise.reject('not implements'),
-  user: null,
+  get user(): firebase.User {
+    throw new Error('not implements')
+  }
 });
 
 export function AuthProvider({ children }: { children: any }) {
   const [user, setUser] = useState<firebase.User | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       setUser(user);
@@ -55,7 +59,6 @@ export function AuthProvider({ children }: { children: any }) {
 
   const logout = useCallback(async () => {
     await firebase.auth().signOut();
-    router.replace('/login');
   }, []);
 
   if (loading) {
@@ -63,9 +66,16 @@ export function AuthProvider({ children }: { children: any }) {
   }
 
   return (
-    <AuthContext.Provider value={{ login, logout, user }}>
-      {children}
-    </AuthContext.Provider>
+    <div>
+      {
+        user ? (
+          <AuthContext.Provider value={{ login, logout, user }}>
+            {children}
+          </AuthContext.Provider>
+        )
+        : <Login />
+      }
+    </div>
   );
 }
 
