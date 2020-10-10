@@ -35,7 +35,6 @@ async function authMiddleware(
   next: express.NextFunction
 ) {
   const token = req.header("Authorization");
-  console.log({ token });
   if (token == null) return res.sendStatus(403);
   const idToken = token.split(" ");
   if (idToken[1] == null) return res.sendStatus(403);
