@@ -4,6 +4,7 @@ on:
   pull_request:
     types: [opened, synchronize]
     branches:
+      - feature/nextjs_firestore
       - master
 jobs:
   lint-check:

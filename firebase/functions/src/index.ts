@@ -19,12 +19,17 @@ function errorMiddleware(
     return next(err);
   }
   res.status(500);
-  res.render("error", { error: err });
+  res.json({
+    error: err.toString(),
+    status: 500,
+  });
 }
 
 app.use(errorMiddleware);
 
 app.use(cors());
+
+console.log("akafoa");
 
 async function authMiddleware(
   req: express.Request,
@@ -32,7 +37,6 @@ async function authMiddleware(
   next: express.NextFunction
 ) {
   const token = req.header("Authorization");
-  console.log({ token });
   if (token == null) return res.sendStatus(403);
   const idToken = token.split(" ");
   if (idToken[1] == null) return res.sendStatus(403);
@@ -42,7 +46,6 @@ async function authMiddleware(
     next();
     return;
   } catch (e) {
-    console.log({ authError: e });
     return res.sendStatus(403);
   }
 }
