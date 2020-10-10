@@ -29,6 +29,8 @@ app.use(errorMiddleware);
 
 app.use(cors());
 
+console.log("akafoa");
+
 async function authMiddleware(
   req: express.Request,
   res: express.Response,
