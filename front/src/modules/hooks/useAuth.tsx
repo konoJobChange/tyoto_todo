@@ -2,12 +2,10 @@ import { useRouter } from 'next/router';
 import firebase from 'firebase';
 import 'firebase/auth';
 import {
-  ComponentType,
   createContext,
   useCallback,
   useContext,
   useEffect,
-  useMemo,
   useState,
 } from 'react';
 import { LinearProgress } from '@material-ui/core';
@@ -22,8 +20,8 @@ const AuthContext = createContext<{
   login: () => Promise.reject('not implements'),
   logout: () => Promise.reject('not implements'),
   get user(): firebase.User {
-    throw new Error('not implements')
-  }
+    throw new Error('not implements');
+  },
 });
 
 export function AuthProvider({ children }: { children: any }) {
@@ -67,14 +65,13 @@ export function AuthProvider({ children }: { children: any }) {
 
   return (
     <div>
-      {
-        user ? (
-          <AuthContext.Provider value={{ login, logout, user }}>
-            {children}
-          </AuthContext.Provider>
-        )
-        : <Login />
-      }
+      {user ? (
+        <AuthContext.Provider value={{ login, logout, user }}>
+          {children}
+        </AuthContext.Provider>
+      ) : (
+        <Login />
+      )}
     </div>
   );
 }

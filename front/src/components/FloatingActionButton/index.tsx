@@ -33,7 +33,12 @@ export default function FloatingActionButton() {
 
   return (
     <div className={classes.root}>
-      <Fab color="primary" aria-label="create todo" className={classes.fab} onClick={handleOpen}>
+      <Fab
+        color="primary"
+        aria-label="create todo"
+        className={classes.fab}
+        onClick={handleOpen}
+      >
         <AddIcon />
       </Fab>
       <InputDialog open={open} handleClose={handleClose} />

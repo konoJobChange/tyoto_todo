@@ -1,5 +1,11 @@
 import React from 'react';
-import Document, { Html, Head, Main, NextScript, DocumentContext } from 'next/document';
+import Document, {
+  Html,
+  Head,
+  Main,
+  NextScript,
+  DocumentContext,
+} from 'next/document';
 import { ServerStyleSheets } from '@material-ui/core/styles';
 
 class MyDocument extends Document {
@@ -18,7 +24,10 @@ class MyDocument extends Document {
     return {
       ...initialProps,
       // Styles fragment is rendered after the app and page rendering finish.
-      styles: [...React.Children.toArray(initialProps.styles), sheets.getStyleElement()],
+      styles: [
+        ...React.Children.toArray(initialProps.styles),
+        sheets.getStyleElement(),
+      ],
     };
   }
 
