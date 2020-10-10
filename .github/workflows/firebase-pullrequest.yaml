@@ -25,6 +25,6 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - run: yarn install
-        working-directory: ./functions
+        working-directory: ./firebase/functions
       - run: yarn lint
-        working-directory: ./functions
+        working-directory: ./firebase/functions
