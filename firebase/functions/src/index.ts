@@ -44,7 +44,6 @@ async function authMiddleware(
     next();
     return;
   } catch (e) {
-    console.log({ authError: e });
     return res.sendStatus(403);
   }
 }
