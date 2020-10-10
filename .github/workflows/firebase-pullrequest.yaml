@@ -23,7 +23,7 @@ jobs:
       - name: run lint of 'firebase'
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node }}
+          node-version: 10.x
       - run: yarn install
         working-directory: ./firebase/functions
       - run: yarn lint
