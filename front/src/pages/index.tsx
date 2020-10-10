@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import { List } from '@material-ui/core';
 import SimpleList from 'src/components/SimpleItem';
 
 const IndexPage = () => {
@@ -10,9 +9,7 @@ const IndexPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <List>
-        <SimpleList />
-      </List>
+      <SimpleList />
     </>
   );
 };

@@ -9,10 +9,14 @@ const withAuthFetcher = async (endPoint: string, user: firebase.User) => {
   }).then((r) => r.json());
 };
 
-export const useHoge = (user: firebase.User): ToDo[] => {
-  const { data } = useSWR<ToDo[]>(
-    [`${process.env.API_SERVICE_URL}/users/${user.uid}/todos`, user],
-    withAuthFetcher,
-  );
-  return data || [];
+export const useHoge = (
+  user: firebase.User,
+): {
+  list: ToDo[];
+  mutate: () => {};
+} => {
+  const key = [`${process.env.API_SERVICE_URL}/users/${user.uid}/todos`, user];
+  const { data, mutate } = useSWR<ToDo[]>(key, withAuthFetcher);
+  const list = data || [];
+  return { list, mutate };
 };
