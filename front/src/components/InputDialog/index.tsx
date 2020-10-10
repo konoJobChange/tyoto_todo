@@ -8,7 +8,6 @@ import {
   DialogTitle,
   TextField,
 } from '@material-ui/core';
-
 import { useInput } from 'src/modules/hooks/useInput';
 import { useAuth } from 'src/modules/hooks/useAuth';
 import { useUpdate } from 'src/modules/hooks/useTodos';
