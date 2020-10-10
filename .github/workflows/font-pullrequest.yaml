@@ -7,6 +7,7 @@ on:
       - feature/nextjs_firestore
     paths:
       - "front/**"
+      - "!firebase/**"
 jobs:
   lint-check:
     name: コードのlintチェック
