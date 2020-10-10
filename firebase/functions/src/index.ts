@@ -19,7 +19,10 @@ function errorMiddleware(
     return next(err);
   }
   res.status(500);
-  res.render("error", { error: err });
+  res.json({
+    error: err.toString(),
+    status: 500,
+  });
 }
 
 app.use(errorMiddleware);
