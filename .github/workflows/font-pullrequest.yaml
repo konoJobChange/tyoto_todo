@@ -3,8 +3,8 @@ name: Create PullRequest or Commit Of Front Directory
 on:
   pull_request:
     paths:
-      - "front/**"
       - "!firebase/**"
+      - "front/**"
     types: [opened, synchronize]
     branches:
       - feature/nextjs_firestore
