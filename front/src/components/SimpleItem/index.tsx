@@ -58,7 +58,12 @@ const SimpleList = () => {
       {list.map((item, i) => {
         return (
           <Fragment key={i}>
-            <ListItem button onClick={() => {router.push(`/users/${user.uid}/todos/${item.id}`)}}>
+            <ListItem
+              button
+              onClick={() => {
+                router.push(`/users/${user.uid}/todos/${item.id}`);
+              }}
+            >
               <ListItemText primary={item.title} />
               <IconButton onClick={handleDelete}>
                 <DeleteIcon />

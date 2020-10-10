@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Card,
   CardContent,
   CardHeader,
@@ -14,7 +13,7 @@ import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import { useRouter } from 'next/router';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ToDo } from 'src/api/todos';
 import dayjs from 'dayjs';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -29,19 +28,22 @@ export default function Profile() {
   const classes = useStyles();
   const router = useRouter();
 
-  const [doc, setDoc] = useState<{doc: firebase.firestore.DocumentSnapshot, todo: ToDo} | null>(null);
+  const [doc, setDoc] = useState<{
+    doc: firebase.firestore.DocumentSnapshot;
+    todo: ToDo;
+  } | null>(null);
 
   useEffect(() => {
     let isMount = true;
     async function fetch() {
       const doc = await firebase
-      .firestore()
-      .doc(`users/${router.query.uid}/todos/${router.query.id}`)
-      .get();
+        .firestore()
+        .doc(`users/${router.query.uid}/todos/${router.query.id}`)
+        .get();
       if (isMount) {
         setDoc({
           doc,
-          todo: doc.data() as ToDo
+          todo: doc.data() as ToDo,
         });
       }
     }
@@ -58,7 +60,7 @@ export default function Profile() {
     return Promise.resolve();
   }, [doc]);
 
-  console.log({doc});
+  console.log({ doc });
   return (
     <Grid
       container
@@ -71,11 +73,15 @@ export default function Profile() {
       {doc == null ? <CircularProgress /> : null}
       <Card>
         {doc && doc.todo ? (
-          <CardHeader className={classes.cardHeader} title={doc && doc.todo.title} action={
-            <IconButton aria-label="trash" onClick={handleDelete}>
-              <DeleteIcon />
-            </IconButton>
-          }/>
+          <CardHeader
+            className={classes.cardHeader}
+            title={doc && doc.todo.title}
+            action={
+              <IconButton aria-label="trash" onClick={handleDelete}>
+                <DeleteIcon />
+              </IconButton>
+            }
+          />
         ) : null}
         {doc && doc.todo ? (
           <CardContent>

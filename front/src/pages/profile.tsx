@@ -8,11 +8,11 @@ import {
   Typography,
 } from '@material-ui/core';
 import { green } from '@material-ui/core/colors';
-import * as firebase from 'firebase/app';
+
 import 'firebase/auth';
 import 'firebase/firestore';
-import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
+
+import React from 'react';
 import { useAuth } from 'src/modules/hooks/useAuth';
 import dayjs from 'dayjs';
 

@@ -5,7 +5,6 @@ import Head from 'next/head';
 import CloseIcon from '@material-ui/icons/Close';
 import {
   Grid,
-  Paper,
   Card,
   CardHeader,
   CardContent,
