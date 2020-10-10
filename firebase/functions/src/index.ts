@@ -63,7 +63,7 @@ router.get("/users/:uid/todos", async (req, res) => {
   );
 });
 
-router.get("users/:uid/todos/:todoId", async (req, res) => {
+router.get("/users/:uid/todos/:todoId", async (req, res) => {
   const doc = await admin
     .firestore()
     .doc(`users/${req.params.uid}/todos/${req.params.todoId}`)
