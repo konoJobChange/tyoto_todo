@@ -6,7 +6,7 @@ const IndexPage = () => {
   return (
     <>
       <Head>
-        <title>Create Next Tyoto Todo App</title>
+        <title>Create Next Tyoto TodoApp</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
