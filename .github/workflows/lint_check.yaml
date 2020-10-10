@@ -4,7 +4,8 @@ on:
   pull_request:
     types: [opened, synchronize]
     branches:
-      - master
+      - feature/nextjs_firestore
+      - feature/github_actions
 jobs:
   lint-check:
     name: コードのlintチェック
