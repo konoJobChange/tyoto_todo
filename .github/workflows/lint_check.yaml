@@ -5,8 +5,6 @@ on:
     types: [opened, synchronize]
     branches:
       - feature/nextjs_firestore
-    paths:
-      - "front/**"
 jobs:
   lint-check:
     name: コードのlintチェック
