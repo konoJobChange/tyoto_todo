@@ -24,6 +24,11 @@ const AuthContext = createContext<{
   },
 });
 
+/**
+ * 初回ログイン状態を読みとる時のログイン画面チラつき防止用
+ */
+let firstLoading = true;
+
 export function AuthProvider({ children }: { children: any }) {
   const [user, setUser] = useState<firebase.User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -31,24 +36,10 @@ export function AuthProvider({ children }: { children: any }) {
 
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+      if (firstLoading && loading) setLoading(false);
       setUser(user);
     });
     return unsubscribe;
-  }, []);
-
-  useEffect(() => {
-    let isMount = true;
-    async function loadAuthSate() {
-      const currentUser = firebase.auth().currentUser;
-      if (isMount) {
-        if (currentUser) setUser(currentUser);
-        setLoading(false);
-      }
-    }
-    loadAuthSate();
-    return () => {
-      isMount = false;
-    };
   }, []);
 
   const login = useCallback(async () => {
@@ -59,7 +50,7 @@ export function AuthProvider({ children }: { children: any }) {
     await firebase.auth().signOut();
   }, []);
 
-  if (loading) {
+  if (loading && user == null) {
     return <LinearProgress />;
   }
 
