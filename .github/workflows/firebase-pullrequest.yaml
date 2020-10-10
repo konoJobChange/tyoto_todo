@@ -2,12 +2,12 @@ name: Create PullRequest or Commit Of Firebase Directory
 
 on:
   pull_request:
-    types: [opened, synchronize]
-    branches:
-      - feature/nextjs_firestore
     paths:
       - "firebase/**"
       - "!front/**"
+    types: [opened, synchronize]
+    branches:
+      - feature/nextjs_firestore
 jobs:
   lint-check:
     name: コードのlintチェック

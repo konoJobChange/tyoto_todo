@@ -2,12 +2,12 @@ name: Create PullRequest or Commit Of Front Directory
 
 on:
   pull_request:
-    types: [opened, synchronize]
-    branches:
-      - feature/nextjs_firestore
     paths:
       - "front/**"
       - "!firebase/**"
+    types: [opened, synchronize]
+    branches:
+      - feature/nextjs_firestore
 jobs:
   lint-check:
     name: コードのlintチェック
