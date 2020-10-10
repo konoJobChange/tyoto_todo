@@ -5,8 +5,8 @@ on:
     types: [opened, synchronize]
     branches:
       - feature/nextjs_firestore
-    paths:
-      - "front/**"
+    paths-ignore:
+      - "firebase/**"
 jobs:
   lint-check:
     name: コードのlintチェック
