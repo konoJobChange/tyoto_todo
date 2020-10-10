@@ -20,3 +20,16 @@ export const useHoge = (
   const list = data || [];
   return { list, mutate };
 };
+
+export const useDetail = (
+  qid: string,
+  user: firebase.User,
+): ToDo | undefined => {
+  const key = [
+    `${process.env.API_SERVICE_URL}/users/${user.uid}/todos/${qid}`,
+    user,
+  ];
+  const { data } = useSWR<ToDo>(key, withAuthFetcher);
+  const detail = data;
+  return detail;
+};
