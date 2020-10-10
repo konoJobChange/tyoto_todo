@@ -7,9 +7,9 @@ import { Create as CreateIcon, Delete as DeleteIcon } from '@material-ui/icons';
 import { useAuth } from 'src/modules/hooks/useAuth';
 import { ToDo } from 'src/api/todos';
 
-import firebase from 'firebase';
-import 'firebase/firestore';
 import { useRouter } from 'next/router';
+
+import { useHoge } from 'src/modules/hooks/useTodos';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -20,30 +20,12 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-const SimpleList = () => {
-  const [list, setList] = useState<ToDo[]>([]);
+const SimpleList: React.FC = () => {
   const classes = useStyles();
   const { user } = useAuth();
   const router = useRouter();
 
-  useEffect(() => {
-    // TODO: あとでけす
-    if (!user) {
-      return;
-    }
-
-    const unsubscribe = firebase
-      .firestore()
-      .collection(`users/${user?.uid}/todos`)
-      .onSnapshot((snap) => {
-        const newList = snap.docs.map((doc) => ({
-          ...(doc.data() as ToDo),
-          id: doc.id,
-        }));
-        setList([...list, ...newList]);
-      });
-    return unsubscribe;
-  }, [user]);
+  const list = useHoge(user);
 
   const handleDelete = useCallback(() => {
     console.log('delete');
@@ -58,7 +40,12 @@ const SimpleList = () => {
       {list.map((item, i) => {
         return (
           <Fragment key={i}>
-            <ListItem button onClick={() => {router.push(`/users/${user.uid}/todos/${item.id}`)}}>
+            <ListItem
+              button
+              onClick={() => {
+                router.push(`/users/${user.uid}/todos/${item.id}`);
+              }}
+            >
               <ListItemText primary={item.title} />
               <IconButton onClick={handleDelete}>
                 <DeleteIcon />
