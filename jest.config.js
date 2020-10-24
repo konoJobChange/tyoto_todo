@@ -4,7 +4,7 @@ module.exports = {
     color: '#acc',
   },
   verbose: true,
-
+  preset: 'ts-jest',
   // typescript
   roots: ['<rootDir>/src'],
   testMatch: [
@@ -14,8 +14,16 @@ module.exports = {
   transform: {
     '^.+\\.(ts|tsx)$': 'ts-jest',
   },
-
+  moduleFileExtensions: ['ts', 'tsx', 'js'],
+  moduleNameMapper: {
+    '^src/(.*)$': '<rootDir>/src/$1',
+  },
   // Setup Enzyme
   snapshotSerializers: ['enzyme-to-json/serializer'],
-  setupFilesAfterEnv: ['<rootDir>/src/setupEnzyme.ts'],
+  setupFilesAfterEnv: ['<rootDir>/setupEnzyme.js'],
+  globals: {
+    'ts-jest': {
+      babelConfig: true,
+    },
+  },
 };
