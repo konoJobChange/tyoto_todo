@@ -1,6 +1,7 @@
 // modules
+import firebase from 'firebase';
 import useSWR, { mutate } from 'swr';
-import { ToDo } from 'src/api/todos';
+import { ToDo } from 'src/modules/todos';
 
 // fetcher
 const withAuthFetcher = async (endPoint: string, user: firebase.User) => {
