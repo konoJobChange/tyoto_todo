@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function FloatingActionButton() {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const {user} = useAuth();
+  const { user } = useAuth();
 
   const handleOpen = useCallback(() => {
     setOpen(true);
@@ -34,10 +34,13 @@ export default function FloatingActionButton() {
     setOpen(false);
   }, []);
 
-  const handleCreate = useCallback(async (title: string, detail: string) => {
+  const handleCreate = useCallback(
+    async (title: string, detail: string) => {
       await useUpdate(title, detail, user);
       handleClose();
-  }, [handleClose, user]);
+    },
+    [handleClose, user],
+  );
 
   return (
     <div className={classes.root}>
@@ -49,7 +52,11 @@ export default function FloatingActionButton() {
       >
         <AddIcon />
       </Fab>
-      <InputDialog open={open} handleClose={handleClose} handleCreate={handleCreate}/>
+      <InputDialog
+        open={open}
+        handleClose={handleClose}
+        handleCreate={handleCreate}
+      />
     </div>
   );
 }
