@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InputDialogをチェックするーーーー 1`] = `
+<div>
+  <WithStyles(ForwardRef(Dialog))
+    aria-labelledby="form-dialog-title"
+    open={true}
+  >
+    <WithStyles(ForwardRef(DialogTitle))
+      id="form-dialog-title"
+    >
+      Todo
+    </WithStyles(ForwardRef(DialogTitle))>
+    <WithStyles(ForwardRef(DialogContent))>
+      <WithStyles(ForwardRef(DialogContentText))>
+        To create your Todo.
+        <br />
+        This is only your tyoto_todo!!
+      </WithStyles(ForwardRef(DialogContentText))>
+      <WithStyles(ForwardRef(TextField))
+        autoFocus={true}
+        fullWidth={true}
+        id="title"
+        label="Title"
+        margin="dense"
+        onChange={[Function]}
+        required={true}
+        type="text"
+        value="ブス"
+      />
+      <WithStyles(ForwardRef(TextField))
+        fullWidth={true}
+        id="detail"
+        label="Detail"
+        margin="dense"
+        multiline={true}
+        onChange={[Function]}
+        rowsMax="3"
+        value="ブスには価値がない"
+      />
+    </WithStyles(ForwardRef(DialogContent))>
+    <WithStyles(ForwardRef(DialogActions))>
+      <WithStyles(ForwardRef(Button))
+        color="primary"
+        onClick={
+          [MockFunction] {
+            "calls": Array [
+              Array [
+                "ブス",
+                "ブスには価値がない",
+              ],
+            ],
+            "results": Array [
+              Object {
+                "type": "return",
+                "value": undefined,
+              },
+            ],
+          }
+        }
+      >
+        Cancel
+      </WithStyles(ForwardRef(Button))>
+      <WithStyles(ForwardRef(Button))
+        color="primary"
+        data-testId="create"
+        onClick={[Function]}
+      >
+        Create
+      </WithStyles(ForwardRef(Button))>
+    </WithStyles(ForwardRef(DialogActions))>
+  </WithStyles(ForwardRef(Dialog))>
+</div>
+`;
