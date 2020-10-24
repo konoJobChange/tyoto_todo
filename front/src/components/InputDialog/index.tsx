@@ -8,73 +8,27 @@ import {
   DialogTitle,
   TextField,
 } from '@material-ui/core';
-
 import { useInput } from 'src/modules/hooks/useInput';
 import { useAuth } from 'src/modules/hooks/useAuth';
-
-import firebase from 'firebase';
-import 'firebase/firestore';
-import { useHoge } from 'src/modules/hooks/useTodos';
+import { useUpdate } from 'src/modules/hooks/useTodos';
 
 interface InputDialog {
   open: boolean;
   handleClose: () => void;
 }
 
-interface ToDo {
-  title: string;
-  detail: string;
-  update_at: firebase.firestore.Timestamp;
-  create_at: firebase.firestore.Timestamp;
-}
-
 export default function InputDialog({ open, handleClose }: InputDialog) {
   const { user } = useAuth();
   const { value: title, bind: bindTitle } = useInput('');
   const { value: detail, bind: bindDetail } = useInput('');
-  const { list, mutate } = useHoge(user);
 
   const handleCreate = useCallback(() => {
-    // TODO: あとでけす
-    if (!user) {
-      return;
-    }
-
-    // const db = firebase.firestore();
-    // const doc: ToDo = {
-    //   title,
-    //   detail,
-    //   update_at: firebase.firestore.Timestamp.now(),
-    //   create_at: firebase.firestore.Timestamp.now(),
-    // };
-
-    // db.collection(`users/${user?.uid}/todos`)
-    //   .add(doc)
-    //   .then(function (docRef) {
-    //     console.log('Document written with ID: ', docRef.id);
-    //   })
-    //   .catch(function (error) {
-    //     console.error('Error adding document: ', error);
-    //   });
-
-    user.getIdToken().then((idToken) => {
-      fetch(`${process.env.API_SERVICE_URL}/users/${user.uid}/todos`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${idToken}`,
-          contentType: 'application/json',
-        },
-        body: JSON.stringify({
-          title,
-          detail,
-        }),
-      })
-        .then((res) => {
-          mutate([...list, res.json()]);
-        })
-        .finally(handleClose);
-    });
-  }, [title, detail, user, mutate]);
+    (async () => {
+      const data = await useUpdate(title, detail, user);
+      console.log(data);
+      handleClose();
+    })();
+  }, [title, detail, user]);
 
   return (
     <div>
