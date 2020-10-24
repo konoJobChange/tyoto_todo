@@ -16,7 +16,11 @@ interface InputDialog {
   handleCreate: (title: string, detail: string) => Promise<void>;
 }
 
-export default function InputDialog({ open, handleClose, handleCreate }: InputDialog) {
+export default function InputDialog({
+  open,
+  handleClose,
+  handleCreate,
+}: InputDialog) {
   const { value: title, bind: bindTitle } = useInput('');
   const { value: detail, bind: bindDetail } = useInput('');
 
@@ -59,7 +63,7 @@ export default function InputDialog({ open, handleClose, handleCreate }: InputDi
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={onSubmit} color="primary">
+          <Button data-testId="create" onClick={onSubmit} color="primary">
             Create
           </Button>
         </DialogActions>

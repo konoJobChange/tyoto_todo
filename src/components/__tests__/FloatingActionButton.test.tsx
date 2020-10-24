@@ -1,14 +1,19 @@
 import { shallow } from 'enzyme';
-import FloatingActionButton from 'src/components/FloatingActionButton';
+import InputDialog from 'src/components/InputDialog';
 
-test('CheckboxWithLabel changes the text after click', () => {
-  const button = shallow(<FloatingActionButton />);
+const fn = jest.fn();
+
+test('InputDialogをチェックするーーーー', () => {
+  const dialog = shallow(
+    <InputDialog open={true} handleClose={fn} handleCreate={fn} />,
+  );
 
   // Interaction demo
-  expect(button.text()).toEqual('Off');
-  button.find('input').simulate('change');
-  expect(button.text()).toEqual('On');
+  // expect(dialog.text()).toEqual('Off');
+  // expect(dialog.text()).toEqual('On');
+  dialog.find('[data-testId]=create').simulate('click');
+  fn.mock.calls;
 
   // Snapshot demo
-  expect(button).toMatchSnapshot();
+  expect(dialog).toMatchSnapshot();
 });
