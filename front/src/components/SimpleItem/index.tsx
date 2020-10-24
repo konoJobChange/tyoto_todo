@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useEffect, useState } from 'react';
+import { Fragment, useCallback } from 'react';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import {
@@ -46,7 +46,6 @@ const SimpleList: React.FC = () => {
   }, []);
 
   const handleEdit = useCallback(() => {
-    console.log('edit');
     mutate();
   }, []);
 
