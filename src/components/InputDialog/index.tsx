@@ -9,26 +9,20 @@ import {
   TextField,
 } from '@material-ui/core';
 import { useInput } from 'src/modules/hooks/useInput';
-import { useAuth } from 'src/modules/hooks/useAuth';
-import { useUpdate } from 'src/modules/hooks/useTodos';
 
 interface InputDialog {
   open: boolean;
   handleClose: () => void;
+  handleCreate: (title: string, detail: string) => Promise<void>;
 }
 
-export default function InputDialog({ open, handleClose }: InputDialog) {
-  const { user } = useAuth();
+export default function InputDialog({ open, handleClose, handleCreate }: InputDialog) {
   const { value: title, bind: bindTitle } = useInput('');
   const { value: detail, bind: bindDetail } = useInput('');
 
-  const handleCreate = useCallback(() => {
-    (async () => {
-      const data = await useUpdate(title, detail, user);
-      console.log(data);
-      handleClose();
-    })();
-  }, [title, detail, user]);
+  const onSubmit = useCallback(() => {
+    handleCreate(title, detail);
+  }, [title, detail]);
 
   return (
     <div>
@@ -65,7 +59,7 @@ export default function InputDialog({ open, handleClose }: InputDialog) {
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleCreate} color="primary">
+          <Button onClick={onSubmit} color="primary">
             Create
           </Button>
         </DialogActions>

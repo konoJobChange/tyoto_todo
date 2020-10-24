@@ -41,7 +41,6 @@ const SimpleList: React.FC = () => {
   const { list, mutate } = useHoge(user);
 
   const handleDelete = useCallback(() => {
-    console.log('delete');
     mutate();
   }, []);
 

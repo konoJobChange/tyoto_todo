@@ -4,8 +4,8 @@ import firebase from 'firebase';
 import 'firebase/analytics';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
-import ButtonAppBar from 'src/components/ButtonAppBar';
-import FloatingActionButton from 'src/components/FloatingActionButton';
+import ButtonAppBar from 'src/containers/ButtonAppBar';
+import FloatingActionButton from 'src/containers/FloatingActionButton';
 import { AuthProvider } from 'src/modules/hooks/useAuth';
 
 import '../styles/globals.css';

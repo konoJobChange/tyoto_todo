@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import SimpleList from 'src/components/SimpleItem';
+import SimpleList from 'src/containers/SimpleList';
 
 const IndexPage = () => {
   return (
