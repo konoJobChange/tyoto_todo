@@ -3,8 +3,9 @@ import { withAuthFetcher } from '../useTodos';
 
 describe('test is useTodos', () => {
   it('check useTodos arguments', async () => {
+    const string = 'konokoki';
     const user = {
-      getIdToken: jest.fn().mockResolvedValue('文字列'),
+      getIdToken: jest.fn().mockResolvedValue(string),
     };
     const endPoint = 'https://kono.koki';
 
@@ -13,10 +14,11 @@ describe('test is useTodos', () => {
       body: {
         name: 'kono koki',
       },
-      headers: { Authorization: `Bearer ${user.getIdToken()}` },
+      headers: { Authorization: `Bearer ${string}` },
     });
 
     await withAuthFetcher(endPoint, user);
+    expect(user.getIdToken).toBeCalledTimes(1);
 
     // fetchMockの設定をリセット
     fetchMock.restore();
