@@ -8,11 +8,15 @@ test('InputDialogをチェックするーーーー', () => {
     <InputDialog open={true} handleClose={fn} handleCreate={fn} />,
   );
 
-  // Interaction demo
-  // expect(dialog.text()).toEqual('Off');
-  // expect(dialog.text()).toEqual('On');
-  dialog.find('[data-testId]=create').simulate('click');
-  fn.mock.calls;
+  // Interaction
+  dialog.find('#title').simulate('change', { target: { value: 'ブス' } });
+  dialog
+    .find('#detail')
+    .simulate('change', { target: { value: 'ブスには価値がない' } });
+
+  dialog.find('[data-testId="create"]').simulate('click');
+  expect(fn).toHaveBeenCalled();
+  expect(fn).toHaveBeenCalledWith('ブス', 'ブスには価値がない');
 
   // Snapshot demo
   expect(dialog).toMatchSnapshot();
