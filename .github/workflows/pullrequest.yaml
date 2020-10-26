@@ -7,8 +7,8 @@ on:
       - feature/test
       - master
 jobs:
-  lint-check:
-    name: コードのlintチェック
+  test:
+    name: run static tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
