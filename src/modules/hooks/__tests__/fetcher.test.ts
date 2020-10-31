@@ -25,3 +25,11 @@ describe('test useTodos fetcher', () => {
     fetchMock.restore();
   });
 });
+
+describe('test is useTodos swr', () => {
+  afterEach(() => cache.clear());
+
+  const fn = jest.fn();
+
+  it('test useHoge', () => {});
+});
