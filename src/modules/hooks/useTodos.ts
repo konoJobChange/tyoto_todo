@@ -4,14 +4,17 @@ import useSWR, { mutate } from 'swr';
 import { ToDo } from 'src/modules/todos';
 
 // fetcher
-const withAuthFetcher = async (endPoint: string, user: firebase.User) => {
+export const withAuthFetcher = async (
+  endPoint: string,
+  user: firebase.User,
+) => {
   const idToken = await user.getIdToken();
   return await fetch(endPoint, {
     headers: { Authorization: `Bearer ${idToken}` },
   }).then((r) => r.json());
 };
 
-const withAuthCreator = async (
+export const withAuthCreator = async (
   endPoint: string,
   user: firebase.User,
   method: 'POST' | 'PATCH',

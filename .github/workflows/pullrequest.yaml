@@ -4,11 +4,11 @@ on:
   pull_request:
     types: [opened, synchronize]
     branches:
-      - feature/nextjs_firestore
+      - feature/test
       - master
 jobs:
-  lint-check:
-    name: コードのlintチェック
+  test:
+    name: run static tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -16,9 +16,24 @@ jobs:
         with:
           # 該当するプルリクの最新のcommitを取得
           ref: ${{ github.event.pull_request.head.sha }}
-      - name: run lint of 'front'
+      - name: Node setup
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node }}
-      - run: yarn install
-      - run: yarn lint
+      - name: Get npm cache directory
+        id: npm-cache
+        run: |
+          echo "::set-output name=dir::$(npm config get cache)"
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ${{ steps.npm-cache.outputs.dir }}
+            **/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: npm install
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm install
+      - name: Test
+        run: npm test

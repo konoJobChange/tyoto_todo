@@ -9,7 +9,7 @@ import {
   useState,
 } from 'react';
 import { LinearProgress } from '@material-ui/core';
-import Login from 'src/components/Login';
+import Login from 'src/containers/Login';
 
 type AsyncVoid = () => Promise<void>;
 const AuthContext = createContext<{
