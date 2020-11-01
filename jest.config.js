@@ -1,4 +1,3 @@
-console.log({ env: process.env.NODE_ENV });
 module.exports = {
   displayName: {
     name: 'CLIENT',

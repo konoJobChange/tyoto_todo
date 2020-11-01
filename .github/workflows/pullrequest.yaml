@@ -34,8 +34,6 @@ jobs:
             ${{ runner.os }}-node-
       - name: echo node version
         run: node -v
-      - name: echo node env
-        run: echo $NODE_ENV
       - name: npm install
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm install
