@@ -24,7 +24,21 @@ module.exports = {
   setupFilesAfterEnv: ['<rootDir>/setupEnzyme.js'],
   globals: {
     'ts-jest': {
-      babelConfig: true,
+      babelConfig: {
+        presets: [
+          'next/babel',
+          [
+            '@babel/preset-env',
+            {
+              targets: {
+                node: 'current',
+              },
+            },
+          ],
+          '@babel/preset-react',
+        ],
+        plugins: ['react-require', '@babel/plugin-transform-modules-commonjs'],
+      },
     },
   },
 };
