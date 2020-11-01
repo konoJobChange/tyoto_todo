@@ -1,0 +1,15 @@
+{
+  "presets": [
+    "next/babel",
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "node": "current"
+        }
+      }
+    ],
+    "@babel/preset-react"
+  ],
+  "plugins": ["react-require", "@babel/plugin-transform-modules-commonjs"]
+}
