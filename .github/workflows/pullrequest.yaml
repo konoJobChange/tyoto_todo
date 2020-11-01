@@ -4,7 +4,7 @@ on:
   pull_request:
     types: [opened, synchronize]
     branches:
-      - feature/test
+      - feature/recoil
       - master
 jobs:
   test:
@@ -36,4 +36,4 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm install
       - name: Test
-        run: npm test
+        run: npm test --no-cache
