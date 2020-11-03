@@ -4,7 +4,7 @@ module.exports = {
     color: '#acc',
   },
   verbose: true,
-  preset: 'ts-jest',
+  preset: 'jest-puppeteer',
   // typescript
   roots: ['<rootDir>/src'],
   testMatch: [
