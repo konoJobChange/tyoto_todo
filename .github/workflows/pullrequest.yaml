@@ -6,6 +6,8 @@ on:
     branches:
       - feature/recoil
       - master
+env:
+  cache-version: v1
 jobs:
   test:
     name: run static tests
@@ -29,7 +31,7 @@ jobs:
           path: |
             ${{ steps.npm-cache.outputs.dir }}
             **/node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-${{ env.cache-version }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
       - name: echo node version
