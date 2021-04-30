@@ -18,14 +18,17 @@ jobs:
           custom_tag: ${{ github.event.inputs.releaseID }}
       - name: Setup Node.js
         uses: actions/setup-node@v2
-      - id: node_modules
-        name: Restore cache node_modules
+      - name: Cache Node.js modules
         uses: actions/cache@v2
         with:
-          path: node_modules
-          key: ${{ runner.os }}-module-${{ hashFiles('package-lock.json') }}
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: ~/.npm
+          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-module-${{ hashFiles('package-lock.json') }}
+            ${{ runner.OS }}-node-
+            ${{ runner.OS }}-
+      - name: Install dependencies
+        run: npm ci
       - name: Create ChangeLog
         run: |
           npm run create_changelog
