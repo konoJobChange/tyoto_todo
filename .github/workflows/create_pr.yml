@@ -1,0 +1,21 @@
+name: Create Release PR
+on:
+  workflow_dispatch:
+    inputs:
+      releaseID:
+        description: 'release ID'
+        required: true
+jobs:
+  create_release_pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Create Branch
+        run: |
+          git checkout -b release/v{{ github.event.inputs.releaseID }}
+          git push origin release/v{{ github.event.inputs.releaseID }}
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v3
+        with:
+          branch: release/v{{ github.event.inputs.releaseID }}
+          title: Release v{{ github.event.inputs.releaseID }}
