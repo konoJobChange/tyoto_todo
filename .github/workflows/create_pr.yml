@@ -58,7 +58,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: `Release ${process.env.RELEASE_ID}`,
-              body: `${process.env.BODY}`.replace(/<br>/g, '/n'),
+              body: `${process.env.BODY}`.replace(/<br>/g, '\n'),
               head: `${process.env.BRANCH}`,
               base: 'master',
               maintainer_can_modify: true
