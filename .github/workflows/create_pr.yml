@@ -18,7 +18,7 @@ jobs:
           custom_tag: ${{ github.event.inputs.releaseID }}
       - name: Create ChangeLog
         run: |
-          npx create_changelog
+          npm run create_changelog
       - name: Create PR
         uses: peter-evans/create-pull-request@v3
         with:
