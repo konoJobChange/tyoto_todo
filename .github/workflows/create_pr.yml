@@ -16,6 +16,16 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           custom_tag: ${{ github.event.inputs.releaseID }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+      - id: node_modules
+        name: Restore cache node_modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-module-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-module-${{ hashFiles('package-lock.json') }}
       - name: Create ChangeLog
         run: |
           npm run create_changelog
