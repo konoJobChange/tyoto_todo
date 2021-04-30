@@ -32,6 +32,7 @@ jobs:
       - name: Create ChangeLog
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GREN_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git checkout -b release/v${{ github.event.inputs.releaseID }}
           npm run create_changelog
