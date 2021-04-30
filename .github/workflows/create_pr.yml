@@ -16,6 +16,9 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           custom_tag: ${{ github.event.inputs.releaseID }}
+      - name: Create ChangeLog
+        run: |
+          npx create_changelog
       - name: Create PR
         uses: peter-evans/create-pull-request@v3
         with:
@@ -23,3 +26,4 @@ jobs:
           branch: release/v${{ github.event.inputs.releaseID }}
           title: Release v${{ github.event.inputs.releaseID }}
           body: ${{ steps.tag_version.outputs.changelog }}
+          commit-message: Update ChangeLog
