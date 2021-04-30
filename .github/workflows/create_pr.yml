@@ -17,5 +17,6 @@ jobs:
       - name: Create PR
         uses: peter-evans/create-pull-request@v3
         with:
+          base: master
           branch: release/v{{ github.event.inputs.releaseID }}
           title: Release v{{ github.event.inputs.releaseID }}
