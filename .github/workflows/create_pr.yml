@@ -36,7 +36,7 @@ jobs:
 
           npm run create_changelog
           change_log=$(cat CHANGELOG.md)
-          change_log="${change_log//$'\n'/  }"
+          change_log="${change_log//$'\n'/<br>}"
           echo $change_log
           echo "::set-output name=std_out::$change_log"
 
@@ -58,7 +58,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: `Release ${process.env.RELEASE_ID}`,
-              body: `Bump v${process.env.BODY}`,
+              body: `${process.env.BODY}`.replace(/<br>/g, '/n'),
               head: `${process.env.BRANCH}`,
               base: 'master',
               maintainer_can_modify: true
