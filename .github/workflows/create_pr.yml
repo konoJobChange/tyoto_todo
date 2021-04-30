@@ -10,12 +10,51 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Create Branch
-        run: |
-          git checkout -b release/v{{ github.event.inputs.releaseID }}
-          git push origin release/v{{ github.event.inputs.releaseID }}
-      - name: Create PR
-        uses: peter-evans/create-pull-request@v3
+      - name: Bump version and push tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v5.5
         with:
-          branch: release/v{{ github.event.inputs.releaseID }}
-          title: Release v{{ github.event.inputs.releaseID }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          custom_tag: ${{ github.event.inputs.releaseID }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+      - name: Cache Node.js modules
+        uses: actions/cache@v2
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: ~/.npm
+          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-node-
+            ${{ runner.OS }}-
+      - name: Install dependencies
+        run: npm ci
+      - name: Create ChangeLog
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GREN_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --local user.email "release-pr-bot@progrit.co.jp"
+          git config --local user.name "release-pr-bot"
+          git checkout -b release/v${{ github.event.inputs.releaseID }}
+          npm run create_changelog
+          git add CHANGELOG.md
+          git commit -m 'Update Changelog v${{ github.event.inputs.releaseID }}'
+          git push origin release/v${{ github.event.inputs.releaseID }}
+      - name: Create PR
+        uses: actions/github-script@v4
+        env:
+          RELEASE_ID: ${{ github.event.inputs.releaseID }}
+          BRANCH: release/v${{ github.event.inputs.releaseID }}
+          BODY: ${{ steps.tag_version.outputs.changelog }}
+        with:
+          script: |
+            github.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Release ${process.env.RELEASE_ID}`,
+              body: `Bump v${process.env.BODY}`,
+              head: `${process.env.BRANCH}`,
+              base: 'master',
+              maintainer_can_modify: true
+            })
