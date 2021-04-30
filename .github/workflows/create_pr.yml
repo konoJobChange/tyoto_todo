@@ -10,13 +10,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Create Branch
-        run: |
-          git checkout -b release/v{{ github.event.inputs.releaseID }}
-          git push origin release/v{{ github.event.inputs.releaseID }}
+      - name: Bump version and push tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v5.5
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          custom_tag: ${{ github.event.inputs.releaseID }}
       - name: Create PR
         uses: peter-evans/create-pull-request@v3
         with:
           base: master
-          branch: release/v{{ github.event.inputs.releaseID }}
-          title: Release v{{ github.event.inputs.releaseID }}
+          branch: release/v${{ github.event.inputs.releaseID }}
+          title: Release v${{ github.event.inputs.releaseID }}
+          body: ${{ steps.tag_version.outputs.changelog }}
