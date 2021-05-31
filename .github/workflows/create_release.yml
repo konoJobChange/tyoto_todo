@@ -5,7 +5,12 @@ on:
     branches:
       - master
     types: [closed]
-
+  workflow_dispatch:
+    inputs:
+      home:
+        description: 'location'
+        required: false
+        default: 'The Octoverse'
 jobs:
   release:
     if: github.event.pull_request.merged == true
