@@ -37,7 +37,7 @@ jobs:
         run: |
           echo "Start Attach Git tag"
           echo "Close Pull Request Branch: $BRANCH"
-          tname=${$BRANCH//release\//}
+          tname=${BRANCH//release\//}
           echo "Tag: $tname"
           echo "::set-output name=tag::$tname"
 
