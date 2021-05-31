@@ -36,9 +36,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          branch_name=${{ github.head_ref }}
-          echo "Close Pull Request Branch: ${{branch_name}}"
-          tag_name=${branch_name//release\//}
+          echo "Start Attach Git tag"
+          branch=${{ github.head_ref }}
+          echo "Close Pull Request Branch: ${{branch}}"
+          tag_name=${branch//release\//}
           echo "Tag: ${{tag_name}}"
           echo "::set-output name=tag::$tag_name"
 
