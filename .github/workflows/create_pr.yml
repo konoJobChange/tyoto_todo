@@ -10,12 +10,56 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Create Branch
-        run: |
-          git checkout -b release/v{{ github.event.inputs.releaseID }}
-          git push origin release/v{{ github.event.inputs.releaseID }}
-      - name: Create PR
-        uses: peter-evans/create-pull-request@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+      - name: Cache Node.js modules
+        uses: actions/cache@v2
         with:
-          branch: release/v{{ github.event.inputs.releaseID }}
-          title: Release v{{ github.event.inputs.releaseID }}
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: ~/.npm
+          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-node-
+            ${{ runner.OS }}-
+      - name: Install dependencies
+        run: npm ci
+      - name: Create ChangeLog
+        id: change_log
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GREN_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --local user.email "release-pr-bot@progrit.co.jp"
+          git config --local user.name "release-pr-bot"
+          git checkout -b release/v${{ github.event.inputs.releaseID }}
+          git tag v${{ github.event.inputs.releaseID }}
+
+          npm run create_changelog
+          change_log=$(cat CHANGELOG.md)
+          change_log="${change_log//$'\n'/<br>}"
+          echo $change_log
+          echo "::set-output name=std_out::$change_log"
+
+          git add CHANGELOG.md
+          git commit -m 'Update Changelog v${{ github.event.inputs.releaseID }}'
+          git tag -d v${{ github.event.inputs.releaseID }}
+          git tag v${{ github.event.inputs.releaseID }}
+          git push origin release/v${{ github.event.inputs.releaseID }}
+          git push origin v${{ github.event.inputs.releaseID }}
+      - name: Create PR
+        uses: actions/github-script@v4
+        env:
+          RELEASE_ID: ${{ github.event.inputs.releaseID }}
+          BRANCH: release/v${{ github.event.inputs.releaseID }}
+          BODY: ${{ steps.change_log.outputs.std_out }}
+        with:
+          script: |
+            github.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Release ${process.env.RELEASE_ID}`,
+              body: `${process.env.BODY}`.replace(/<br>/g, '\n'),
+              head: `${process.env.BRANCH}`,
+              base: 'master',
+              maintainer_can_modify: true
+            })
