@@ -37,7 +37,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "Start Attach Git tag"
-          branch=${{ github.head_ref }}
+          branch="${{ github.head_ref }}"
           echo "Close Pull Request Branch: ${{branch}}"
           tag_name=${branch//release\//}
           echo "Tag: ${{tag_name}}"
