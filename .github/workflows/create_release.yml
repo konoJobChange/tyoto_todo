@@ -32,7 +32,6 @@ jobs:
         if: steps.node_modules.outputs.cache-hit != 'true'
       - name: Attach Git tag
         id: attach_tag
-        if: github.event.pull_request.merged == true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
