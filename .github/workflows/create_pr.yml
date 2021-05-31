@@ -3,26 +3,36 @@ on:
   workflow_dispatch:
     inputs:
       releaseID:
-        description: 'release ID'
+        description: 'リリースID。例）release/v21.05.01 の `21.05.01`の部分'
         required: true
 jobs:
   create_release_pr:
     runs-on: ubuntu-latest
     steps:
+      - run: |
+          echo "Branch: ${{github.head_ref}}"
+          echo "version ID: v${{ github.event.inputs.releaseID }}"
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - name: Setup Node.js
         uses: actions/setup-node@v2
-      - name: Cache Node.js modules
+      - id: node_modules
+        name: Restore cache node_modules
         uses: actions/cache@v2
         with:
-          # npm cache files are stored in `~/.npm` on Linux/macOS
-          path: ~/.npm
-          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+          path: node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
           restore-keys: |
-            ${{ runner.OS }}-node-
-            ${{ runner.OS }}-
-      - name: Install dependencies
-        run: npm ci
+            ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+            ${{ runner.os }}-yarn-
+      - run: yarn --frozen-lockfile
+        if: steps.node_modules.outputs.cache-hit != 'true'
+      - name: 'Get Previous tag'
+        id: previoustag
+        run: |
+          prev=$(git describe --abbrev=0 --tags `git rev-list --tags --skip=1  --max-count=1`)
+          echo "::set-output name=tag::$prev"
       - name: Create ChangeLog
         id: change_log
         env:
@@ -33,19 +43,27 @@ jobs:
           git config --local user.name "release-pr-bot"
           git checkout -b release/v${{ github.event.inputs.releaseID }}
           git tag v${{ github.event.inputs.releaseID }}
+          git push origin v${{ github.event.inputs.releaseID }}
 
-          npm run create_changelog
-          change_log=$(cat CHANGELOG.md)
-          change_log="${change_log//$'\n'/<br>}"
-          echo $change_log
-          echo "::set-output name=std_out::$change_log"
+          # yarn create_changelog --tags=v${{ github.event.inputs.releaseID }}..${{ steps.previoustag.outputs.tag }}
+          touch .changelog
+          ./scripts/gren/create_changelog.sh .changelog v${{ github.event.inputs.releaseID }}..${{ steps.previoustag.outputs.tag }}
+          change_log=$(cat .changelog)
+          change_log_html="${change_log//$'\n'/<br>}"
+          change_log_file="${change_log//$'\n'/\\n}"
+          echo $change_log_file
+          echo "::set-output name=std_out::$change_log_html"
+
+          # add CHANGELOG.md
+          { echo ${change_log_file}; cat CHANGELOG.md; } > CHANGELOG.md.new
+          mv CHANGELOG.md{.new,}
 
           git add CHANGELOG.md
           git commit -m 'Update Changelog v${{ github.event.inputs.releaseID }}'
           git tag -d v${{ github.event.inputs.releaseID }}
-          git tag v${{ github.event.inputs.releaseID }}
+          git tag -d origin v${{ github.event.inputs.releaseID }}
+
           git push origin release/v${{ github.event.inputs.releaseID }}
-          git push origin v${{ github.event.inputs.releaseID }}
       - name: Create PR
         uses: actions/github-script@v4
         env:
@@ -54,12 +72,37 @@ jobs:
           BODY: ${{ steps.change_log.outputs.std_out }}
         with:
           script: |
-            github.pulls.create({
+            const releasePrResult = await github.pulls.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: `Release ${process.env.RELEASE_ID}`,
               body: `${process.env.BODY}`.replace(/<br>/g, '\n'),
               head: `${process.env.BRANCH}`,
               base: 'master',
-              maintainer_can_modify: true
+              maintainer_can_modify: true,
+              draft: true
+            })
+            await github.pulls.requestReviewers({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: releasePrResult.number,
+              team_reviewers: ['progrit/frontend-admin', 'progrit/frontend-member']
+            })
+            const patchPrResult = await github.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Release Patch ${process.env.RELEASE_ID}`,
+              body: `
+                ${releasePrResult.url} のDevelopマージ用PRです
+              `,
+              head: `${process.env.BRANCH}`,
+              base: 'develop',
+              maintainer_can_modify: true,
+              draft: true
+            })
+            await github.pulls.requestReviewers({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: patchPrResult.number,
+              team_reviewers: ['progrit/frontend-member']
             })

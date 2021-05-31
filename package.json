@@ -15,7 +15,8 @@
     "test": "jest",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "create_changelog": "gren changelog -G -o"
+    "create_changelog": "gren changelog -G -o",
+    "create_release": "gren release -o"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.0",

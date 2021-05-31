@@ -1,0 +1,48 @@
+name: Create Release
+
+on:
+  pull_request:
+    branches:
+      - master
+    types: [closed]
+
+jobs:
+  release:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+      - id: node_modules
+        name: Restore cache node_modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+            ${{ runner.os }}-yarn-
+      - run: yarn --frozen-lockfile
+        if: steps.node_modules.outputs.cache-hit != 'true'
+      - name: Attach Git tag
+        id: attach_tag
+        if: github.event.pull_request.merged == true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          branch_name=${{ github.head_ref }}
+          echo "Close Pull Request Branch: ${{branch_name}}"
+          tag_name=${branch_name//release\//}
+          echo "Tag: ${{tag_name}}"
+          echo "::set-output name=tag::$tag_name"
+
+          git config --local user.email "release-pr-bot@progrit.co.jp"
+          git config --local user.name "release-pr-bot"
+          git tag ${{tag_name}}
+          git push origin ${{tag_name}}
+      - name: Create Release
+        env:
+          GREN_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npm run create_release --tags ${{steps.attach_tag.outputs.tag}}
