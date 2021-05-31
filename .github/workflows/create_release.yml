@@ -30,21 +30,22 @@ jobs:
             ${{ runner.os }}-yarn-
       - run: yarn --frozen-lockfile
         if: steps.node_modules.outputs.cache-hit != 'true'
-      - name: Attach Git tag
-        id: attach_tag
+      - id: attach_tag
+        name: Attach Git tag
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: ${{ github.head_ref }}
         run: |
           echo "Start Attach Git tag"
-          echo "Close Pull Request Branch: ${{ github.head_ref }}"
-          tag_name=${${{ github.head_ref }}//release\//}
-          echo "Tag: ${{tag_name}}"
-          echo "::set-output name=tag::$tag_name"
+          echo "Close Pull Request Branch: $BRANCH"
+          tname=${$BRANCH//release\//}
+          echo "Tag: $tname"
+          echo "::set-output name=tag::$tname"
 
           git config --local user.email "release-pr-bot@progrit.co.jp"
           git config --local user.name "release-pr-bot"
-          git tag ${{tag_name}}
-          git push origin ${{tag_name}}
+          git tag $tname
+          git push origin $tname
       - name: Create Release
         env:
           GREN_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
